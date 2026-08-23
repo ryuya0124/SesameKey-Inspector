@@ -1,0 +1,9 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "sesame-key-inspector",
+  "compatibility_date": "2026-08-23",
+  "assets": {
+    // SPA として動作させる。静的ファイルにマッチしないリクエストはすべて index.html へ
+    "not_found_handling": "single-page-application"
+  }
+}
