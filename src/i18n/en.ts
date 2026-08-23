@@ -11,6 +11,9 @@ export const en = {
   uploadTitle: "Select QR Code Image",
   uploadDesc: "Drag & Drop, click, or paste with Ctrl+V",
   uploadButton: "Choose Image",
+  uploadPaste: "Paste from Clipboard",
+  uploadPasteError: "Clipboard access was denied",
+  uploadPasteNoImage: "No image found in clipboard",
   uploadHint: "PNG / JPEG / WebP / HEIC and more",
   uploadDragging: "Drop here",
 

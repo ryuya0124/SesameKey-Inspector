@@ -24,13 +24,13 @@ SESAME Bot 2 / Bot 3 のQRコードをブラウザだけで解析する、完全
 ### 前提条件
 
 - Node.js 20以上
-- npm 10以上
+- pnpm 10以上
 - Cloudflare アカウント（デプロイ時）
 
 ### インストール
 
 ```bash
-npm install
+pnpm install
 ```
 
 ---
@@ -38,7 +38,7 @@ npm install
 ## 開発
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 `http://localhost:5173` で開発サーバーが起動します。
@@ -48,7 +48,7 @@ npm run dev
 ## ビルド
 
 ```bash
-npm run build
+pnpm build
 ```
 
 `dist/` ディレクトリにビルド成果物が生成されます。
@@ -56,7 +56,7 @@ npm run build
 ### ビルドのプレビュー
 
 ```bash
-npm run preview
+pnpm preview
 ```
 
 ---
@@ -66,20 +66,20 @@ npm run preview
 ### Cloudflare Workers へのデプロイ
 
 ```bash
-npm run deploy
+pnpm deploy
 ```
 
 または手動:
 
 ```bash
-npm run build
-npx wrangler deploy
+pnpm build
+pnpm exec wrangler deploy
 ```
 
 ### 初回デプロイの認証
 
 ```bash
-npx wrangler login
+pnpm exec wrangler login
 ```
 
 ### Custom Domain の設定

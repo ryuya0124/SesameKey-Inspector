@@ -85,11 +85,43 @@ export function initUpload(onImageSelected: ImageSelectedCallback): void {
   // ドラッグカウンター (子要素への dragenter/dragleave のノイズを除去)
   let dragDepth = 0;
 
+  const btnPaste = document.getElementById("btn-paste") as HTMLButtonElement | null;
+
   // -- ファイル選択ボタン --
   btnSelect.addEventListener("click", (e) => {
     e.stopPropagation();
     fileInput.click();
   });
+
+  // -- クリップボードから貼り付けボタン --
+  if (btnPaste) {
+    btnPaste.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      try {
+        if (!navigator.clipboard?.read) {
+          showDropZoneError(t("uploadPasteError"));
+          return;
+        }
+
+        const items = await navigator.clipboard.read();
+        for (const item of items) {
+          const imageType = item.types.find((type) => type.startsWith("image/"));
+          if (imageType) {
+            const blob = await item.getType(imageType);
+            const file = new File([blob], "clipboard-image.png", { type: imageType });
+            const bitmap = await fileToImageBitmap(file);
+            if (bitmap) {
+              onImageSelected(bitmap);
+              return;
+            }
+          }
+        }
+        showDropZoneError(t("uploadPasteNoImage"));
+      } catch (err) {
+        showDropZoneError(t("uploadPasteError"));
+      }
+    });
+  }
 
   fileInput.addEventListener("change", async () => {
     const file = fileInput.files?.[0];
@@ -162,7 +194,7 @@ export function initUpload(onImageSelected: ImageSelectedCallback): void {
 
   // ドロップゾーンのクリック (ボタン以外の部分)
   dropZone.addEventListener("click", (e) => {
-    if (e.target === btnSelect) return;
+    if (e.target === btnSelect || e.target === btnPaste || btnPaste?.contains(e.target as Node)) return;
     fileInput.click();
   });
 

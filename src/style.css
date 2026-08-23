@@ -381,9 +381,19 @@ body {
 }
 
 /* ---- ボタン ---- */
+.upload-buttons {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 .btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-6);
   background: linear-gradient(135deg, var(--color-primary) 0%, #38bdf8 100%);

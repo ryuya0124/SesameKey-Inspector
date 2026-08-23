@@ -11,6 +11,9 @@ export const ja = {
   uploadTitle: "QRコード画像を選択",
   uploadDesc: "ドラッグ&ドロップ、クリック、またはCtrl+Vで貼り付け",
   uploadButton: "画像を選択",
+  uploadPaste: "クリップボードから貼り付け",
+  uploadPasteError: "クリップボードへのアクセスが拒否されました",
+  uploadPasteNoImage: "クリップボードに画像がありません",
   uploadHint: "PNG / JPEG / WebP / HEIC など対応",
   uploadDragging: "ここにドロップ",
 
