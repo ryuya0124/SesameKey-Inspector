@@ -23,6 +23,8 @@ export const SesameErrorCode = {
   UNSUPPORTED_MODEL: "UNSUPPORTED_MODEL",
   /** Secret Key の抽出に失敗 */
   SECRET_EXTRACTION_FAILED: "SECRET_EXTRACTION_FAILED",
+  /** CANDY HOUSEサーバーでのみ復号できる10分限定の暗号化QR */
+  ENCRYPTED_QR_UNSUPPORTED: "ENCRYPTED_QR_UNSUPPORTED",
 } as const;
 export type SesameErrorCode = typeof SesameErrorCode[keyof typeof SesameErrorCode];
 

@@ -33,6 +33,17 @@ export const ja = {
   labelUuid: "デバイスUUID",
   labelDecodeMethod: "デコード方式",
 
+  // Bot 3 → Bot 2 偽装
+  disguiseTitle: "Nature Home向け偽装",
+  disguiseDescription: "SESAME Bot 3の製品コードだけをBot 2へ変更したQRを生成します。Secret・UUID・権限は変更しません。",
+  disguiseButton: "Bot 2として偽装QRを生成",
+  disguiseGenerating: "生成中…",
+  disguiseReady: "偽装QRを生成しました",
+  disguiseInstruction: "Nature HomeアプリでこのQRを読み込んでください。SESAME Bot 2として表示されます。",
+  disguiseWarning: "このQRにはデバイスの操作鍵が含まれます。第三者へ共有しないでください。",
+  disguiseDownload: "QR画像を保存",
+  disguiseFailed: "偽装QRの生成に失敗しました",
+
   // Secret Key 操作
   secretMasked: "••••••••••••••••••••••••••••••••",
   btnShowSecret: "表示",
@@ -58,6 +69,7 @@ export const ja = {
   errorInvalidSesameData: "SESAMEデータのフォーマットが不正です。",
   errorUnsupportedModel: "このデバイスモデルには対応していません。",
   errorSecretExtractionFailed: "Secret Keyの抽出に失敗しました。",
+  errorEncryptedQrUnsupported: "暗号化QRには対応していません。SESAMEアプリで「QRコードを暗号化」をOFFにして、QRを再生成してください。",
   errorUnknown: "予期しないエラーが発生しました。",
 
   // エラーヒント

@@ -10,6 +10,8 @@
  */
 
 import type { SesameDeviceInfo } from "../sesame/models.ts";
+import { ProductModel } from "../sesame/models.ts";
+import { disguiseBot3AsBot2 } from "../sesame/disguise.ts";
 import { t } from "../i18n/index.ts";
 
 /** コピー成功トーストの表示時間 (ms) */
@@ -69,6 +71,7 @@ function getAccessLevelInfo(
 export function renderResult(
   deviceInfo: SesameDeviceInfo,
   decodeStage: string,
+  sourceQrText: string,
 ): void {
   // メモリに Secret を保持 (ページリロードで消える)
   currentSecretKeyHex = deviceInfo.secretKeyHex;
@@ -213,6 +216,88 @@ export function renderResult(
     false,
   );
   container.appendChild(methodCard);
+
+  // --- Bot 3 → Bot 2 偽装 ---
+  if (deviceInfo.model === ProductModel.SesameBot3) {
+    container.appendChild(createDisguiseCard(sourceQrText));
+  }
+}
+
+/** Nature Home向けBot 2偽装QRの生成UI */
+function createDisguiseCard(sourceQrText: string): HTMLElement {
+  const card = document.createElement("div");
+  card.className = "result-card disguise-card";
+
+  const header = document.createElement("div");
+  header.className = "disguise-header";
+
+  const title = document.createElement("div");
+  title.className = "card-label disguise-title";
+  title.textContent = t("disguiseTitle");
+
+  header.append(title);
+
+  const description = document.createElement("p");
+  description.className = "disguise-description";
+  description.textContent = t("disguiseDescription");
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "btn-primary disguise-button";
+  button.textContent = t("disguiseButton");
+
+  const output = document.createElement("div");
+  output.className = "disguise-output hidden";
+
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    button.textContent = t("disguiseGenerating");
+
+    try {
+      const disguisedUri = disguiseBot3AsBot2(sourceQrText);
+      const QRCode = await import("qrcode");
+      const dataUrl = await QRCode.toDataURL(disguisedUri, {
+        errorCorrectionLevel: "H",
+        margin: 4,
+        width: 720,
+        color: { dark: "#000000", light: "#ffffff" },
+      });
+
+      const ready = document.createElement("p");
+      ready.className = "disguise-ready";
+      ready.textContent = t("disguiseReady");
+
+      const image = document.createElement("img");
+      image.className = "disguise-qr";
+      image.src = dataUrl;
+      image.alt = t("disguiseReady");
+
+      const instruction = document.createElement("p");
+      instruction.className = "disguise-instruction";
+      instruction.textContent = t("disguiseInstruction");
+
+      const warning = document.createElement("p");
+      warning.className = "disguise-warning";
+      warning.textContent = t("disguiseWarning");
+
+      const download = document.createElement("a");
+      download.className = "btn-secondary disguise-download";
+      download.href = dataUrl;
+      download.download = "sesame-bot3-as-bot2.png";
+      download.textContent = t("disguiseDownload");
+
+      output.replaceChildren(ready, image, instruction, warning, download);
+      output.classList.remove("hidden");
+      button.remove();
+    } catch {
+      button.disabled = false;
+      button.textContent = t("disguiseButton");
+      showToast(t("disguiseFailed"));
+    }
+  });
+
+  card.append(header, description, button, output);
+  return card;
 }
 
 /** 汎用カードを生成する */

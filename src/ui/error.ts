@@ -31,6 +31,8 @@ function getErrorMessageKey(
       return "errorUnsupportedModel";
     case SesameErrorCode.SECRET_EXTRACTION_FAILED:
       return "errorSecretExtractionFailed";
+    case SesameErrorCode.ENCRYPTED_QR_UNSUPPORTED:
+      return "errorEncryptedQrUnsupported";
     default:
       return "errorUnknown";
   }

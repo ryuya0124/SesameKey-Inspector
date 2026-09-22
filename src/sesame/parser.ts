@@ -6,10 +6,15 @@
  * バイナリ構造 (CANDY HOUSE公式 + コミュニティ調査による確認済み仕様):
  *   byte  0     : Product Model (デバイスタイプ番号)
  *   byte  1-16  : Secret Key (16 bytes)
+ * OS2形式 (99 bytes):
  *   byte  17-80 : Public Key (64 bytes)
  *   byte  81-82 : Key Index (2 bytes, little-endian)
  *   byte  83-98 : Device UUID (16 bytes)
- *   合計        : 99 bytes
+ *
+ * OS3コンパクト形式 (39 bytes):
+ *   byte  17-20 : Public Key (4 bytes)
+ *   byte  21-22 : Key Index (2 bytes, little-endian)
+ *   byte  23-38 : Device UUID (16 bytes)
  */
 
 import { SesameError, SesameErrorCode } from "../errors.ts";
@@ -23,6 +28,9 @@ const MIN_PAYLOAD_BYTES = 17; // model (1) + secret key (16)
 /** 完全なペイロードのバイト数 */
 const FULL_PAYLOAD_BYTES = 99;
 
+/** SESAME OS3のコンパクトペイロード長 */
+const COMPACT_PAYLOAD_BYTES = 39;
+
 /** 各フィールドのオフセットと長さ (確認済み仕様) */
 const OFFSETS = {
   model: { start: 0, length: 1 },
@@ -30,6 +38,12 @@ const OFFSETS = {
   publicKey: { start: 17, length: 64 },
   keyIndex: { start: 81, length: 2 },
   uuid: { start: 83, length: 16 },
+} as const;
+
+const COMPACT_OFFSETS = {
+  publicKey: { start: 17, length: 4 },
+  keyIndex: { start: 21, length: 2 },
+  uuid: { start: 23, length: 16 },
 } as const;
 
 /**
@@ -66,11 +80,28 @@ export function parseSesameData(ssmUri: SsmUri): SesameDeviceInfo {
     );
   }
 
+  // 10分限定の暗号化QRは、共有鍵本体ではなく16 bytesの交換トークンを持つ。
+  // 復号にはCANDY HOUSEの認証済みAPIが必要なため、クライアント単体では扱わない。
+  if (bytes.length === 16) {
+    throw new SesameError(
+      SesameErrorCode.ENCRYPTED_QR_UNSUPPORTED,
+      "Encrypted SESAME QR token detected",
+    );
+  }
+
   // 最小バイト数チェック
   if (bytes.length < MIN_PAYLOAD_BYTES) {
     throw new SesameError(
       SesameErrorCode.INVALID_SESAME_DATA,
       `Decoded data too short: expected at least ${MIN_PAYLOAD_BYTES} bytes, got ${bytes.length}`,
+    );
+  }
+
+  // 現在確認できている共有鍵QRはOS3の39 bytesかOS2の99 bytes。
+  if (bytes.length !== COMPACT_PAYLOAD_BYTES && bytes.length !== FULL_PAYLOAD_BYTES) {
+    throw new SesameError(
+      SesameErrorCode.INVALID_SESAME_DATA,
+      `Unsupported SESAME payload length: ${bytes.length}`,
     );
   }
 
@@ -96,31 +127,35 @@ export function parseSesameData(ssmUri: SsmUri): SesameDeviceInfo {
 
   const secretKeyHex = toHexString(secretKey);
 
-  // Public Key (byte 17-80) — 存在する場合のみ
-  const publicKey =
-    bytes.length >= OFFSETS.publicKey.start + OFFSETS.publicKey.length
-      ? bytes.slice(
-          OFFSETS.publicKey.start,
-          OFFSETS.publicKey.start + OFFSETS.publicKey.length,
-        )
-      : new Uint8Array(0);
+  const layout = bytes.length >= FULL_PAYLOAD_BYTES
+    ? OFFSETS
+    : bytes.length >= COMPACT_PAYLOAD_BYTES
+      ? COMPACT_OFFSETS
+      : null;
+
+  // Public Key — OS2は64 bytes、OS3コンパクト形式は4 bytes
+  const publicKey = layout
+    ? bytes.slice(
+        layout.publicKey.start,
+        layout.publicKey.start + layout.publicKey.length,
+      )
+    : new Uint8Array(0);
 
   // Key Index (byte 81-82) — little-endian uint16
   let keyIndex = 0;
-  if (bytes.length >= OFFSETS.keyIndex.start + OFFSETS.keyIndex.length) {
+  if (layout) {
     keyIndex =
-      bytes[OFFSETS.keyIndex.start] |
-      (bytes[OFFSETS.keyIndex.start + 1] << 8);
+      bytes[layout.keyIndex.start] |
+      (bytes[layout.keyIndex.start + 1] << 8);
   }
 
   // UUID (byte 83-98)
-  const uuid =
-    bytes.length >= FULL_PAYLOAD_BYTES
-      ? bytes.slice(
-          OFFSETS.uuid.start,
-          OFFSETS.uuid.start + OFFSETS.uuid.length,
-        )
-      : new Uint8Array(0);
+  const uuid = layout
+    ? bytes.slice(
+        layout.uuid.start,
+        layout.uuid.start + layout.uuid.length,
+      )
+    : new Uint8Array(0);
 
   const uuidString = uuid.length === 16 ? formatUuid(uuid) : "";
 

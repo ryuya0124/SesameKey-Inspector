@@ -33,6 +33,17 @@ export const en = {
   labelUuid: "Device UUID",
   labelDecodeMethod: "Decode Method",
 
+  // Bot 3 → Bot 2 disguise
+  disguiseTitle: "Nature Home Disguise",
+  disguiseDescription: "Generates a QR code that changes only the SESAME Bot 3 product code to Bot 2. The secret, UUID, and access level remain unchanged.",
+  disguiseButton: "Generate Bot 2 Disguised QR",
+  disguiseGenerating: "Generating…",
+  disguiseReady: "Disguised QR generated",
+  disguiseInstruction: "Scan this QR code in the Nature Home app. It will appear as SESAME Bot 2.",
+  disguiseWarning: "This QR code contains the device control key. Do not share it with anyone.",
+  disguiseDownload: "Save QR Image",
+  disguiseFailed: "Failed to generate the disguised QR code",
+
   // Secret Key controls
   secretMasked: "••••••••••••••••••••••••••••••••",
   btnShowSecret: "Show",
@@ -58,6 +69,7 @@ export const en = {
   errorInvalidSesameData: "The SESAME data format is invalid.",
   errorUnsupportedModel: "This device model is not supported.",
   errorSecretExtractionFailed: "Failed to extract the Secret Key.",
+  errorEncryptedQrUnsupported: "Encrypted QR codes are not supported. Turn off 'Encrypt QR code' in the SESAME app and generate a new QR code.",
   errorUnknown: "An unexpected error occurred.",
 
   // Error hints

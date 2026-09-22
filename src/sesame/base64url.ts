@@ -58,6 +58,18 @@ export function decodeBase64Url(value: string): Uint8Array {
 }
 
 /**
+ * Uint8Array を標準Base64へエンコードする。
+ * SESAMEのQR URIへ再格納するときは、呼び出し側でURLエンコードする。
+ */
+export function encodeBase64(bytes: Uint8Array): string {
+  let binary = "";
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+  return btoa(binary);
+}
+
+/**
  * Uint8Array を16進数文字列に変換する
  * @param bytes バイト列
  * @param separator バイト間の区切り文字 (デフォルト: なし)

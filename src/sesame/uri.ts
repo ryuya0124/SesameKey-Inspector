@@ -61,7 +61,9 @@ export function parseSsmUri(rawText: string): SsmUri {
   }
 
   // sk パラメータの確認
-  const sk = params.get("sk");
+  // application/x-www-form-urlencoded互換のURLSearchParamsは、未エスケープの
+  // `+` を空白として扱う。SESAMEの標準Base64では `+` が正当な文字なので戻す。
+  const sk = params.get("sk")?.replace(/ /g, "+") ?? null;
   if (!sk) {
     throw new SesameError(
       SesameErrorCode.MISSING_SK,

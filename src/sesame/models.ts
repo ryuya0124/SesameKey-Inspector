@@ -19,9 +19,10 @@ export const ProductModel = {
   SesameRemote: 14,
   RemoteNano: 15,
   Sesame5USA: 16,
-  SesameBot2: 17, // Bot 2 / Bot 3 は共通実装
+  SesameBot2: 17,
   F2: 18,
   F1: 19,
+  SesameBot3: 35, // Bot 2と同じ制御実装だがProduct Modelは別
 } as const;
 export type ProductModel = typeof ProductModel[keyof typeof ProductModel];
 
@@ -44,7 +45,8 @@ export function isLockDevice(model: number): boolean {
 export function isBotDevice(model: number): boolean {
   return (
     model === ProductModel.SesameBot1 ||
-    model === ProductModel.SesameBot2
+    model === ProductModel.SesameBot2 ||
+    model === ProductModel.SesameBot3
   );
 }
 
@@ -67,9 +69,10 @@ export function getModelName(model: number): string {
     case ProductModel.SesameRemote:  return "Sesame Remote";
     case ProductModel.RemoteNano:    return "Remote Nano";
     case ProductModel.Sesame5USA:    return "Sesame 5 (USA)";
-    case ProductModel.SesameBot2:    return "Sesame Bot 2 / Bot 3";
+    case ProductModel.SesameBot2:    return "Sesame Bot 2";
     case ProductModel.F2:            return "F2";
     case ProductModel.F1:            return "F1";
+    case ProductModel.SesameBot3:    return "Sesame Bot 3";
     default:                         return `Unknown (type=${model})`;
   }
 }

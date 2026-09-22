@@ -11,6 +11,8 @@ SESAME Bot 2 / Bot 3 のQRコードをブラウザだけで解析する、完全
 - 📷 QRコード画像のアップロード（ファイル選択 / ドラッグ&ドロップ / クリップボード貼り付け）
 - 🔍 段階的な画像前処理によるQRコード検出率の最大化
 - 🔑 Secret Key、Public Key、デバイスUUID、モデル情報の抽出・表示
+- 🧪 SESAME Bot 3をBot 2としてNature Homeへ登録する偽装QR生成
+- 🔐 10分限定の暗号化QRを検出し、非対応理由と再生成手順を表示
 - 🔒 Secret Key のデフォルトマスク表示、「表示」/「コピー」ボタン
 - 🌐 日本語 / English 切り替え対応
 - 🌙 ダークモード / ライトモード対応（`prefers-color-scheme`）
@@ -197,7 +199,7 @@ src/
 
 ## SESAMEバイナリフォーマット
 
-`sk` パラメータを Base64URL デコードした後のバイト構造（CANDY HOUSE公式ドキュメント確認済み）:
+`sk` パラメータを Base64URL デコードした後のバイト構造（CANDY HOUSE公式ドキュメント確認済み）。OS2の99バイト形式に加え、Bot 2 / Bot 3で使われるOS3の39バイト形式にも対応しています。
 
 | オフセット | サイズ | 内容 |
 |---|---|---|
@@ -207,12 +209,17 @@ src/
 | 81–82 | 2 bytes | Key Index（little-endian） |
 | 83–98 | 16 bytes | Device UUID |
 
+OS3コンパクト形式ではPublic Keyが4バイト、Key Indexが21–22、Device UUIDが23–38に格納されます。
+
+10分限定の暗号化QRには共有鍵本体ではなく16バイトの交換トークンだけが含まれます。復号にはCANDY HOUSEの認証済みAPIが必要で、完全クライアントサイドという本アプリの設計と両立しないため、検出時は暗号化をOFFにして再生成するよう案内します。
+
 ## デバイスタイプ番号
 
 | 番号 | 機種 |
 |---|---|
 | 2 | Sesame Bot 1 |
-| 17 | Sesame Bot 2 / Bot 3 |
+| 17 | Sesame Bot 2 |
+| 35 | Sesame Bot 3 |
 | 0 | Sesame 3 |
 | 4 | Sesame 4 |
 | 5 | Sesame 5 |

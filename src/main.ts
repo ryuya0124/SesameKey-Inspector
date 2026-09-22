@@ -94,7 +94,7 @@ async function handleImageSelected(bitmap: ImageBitmap): Promise<void> {
             const deviceInfo = parseSesameData(ssmUri);
 
             // 結果表示
-            renderResult(deviceInfo, stage);
+            renderResult(deviceInfo, stage, qrText);
             showSection("result");
           } catch (err) {
             renderError(err);
