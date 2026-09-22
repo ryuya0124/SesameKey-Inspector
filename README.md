@@ -2,7 +2,7 @@
 
 SESAME Bot 2 / Bot 3 のQRコードをブラウザだけで解析する、完全クライアントサイドのWebアプリです。
 
-**公開サイト:** https://sesame-key-inspector.ryuya1adgjmptw.workers.dev/
+**公開サイト:** https://sesame-key-inspector.ryuya-dev.net/
 
 **画像・QRコード・Secret Key はすべてブラウザ内でのみ処理され、サーバーへは一切送信しません。**
 
@@ -69,6 +69,8 @@ pnpm preview
 
 ### Cloudflare Workers へのデプロイ
 
+公開先の `sesame-key-inspector.ryuya-dev.net` は Cloudflare ダッシュボードで Custom Domain として設定済みです。`wrangler.jsonc` では本番・プレビューの `workers.dev` URLを無効にしています。
+
 ```bash
 pnpm deploy
 ```
@@ -104,7 +106,7 @@ pnpm exec wrangler login
   },
   "routes": [
     {
-      "pattern": "sesame.example.com/*",
+      "pattern": "sesame.example.com",
       "custom_domain": true
     }
   ]
