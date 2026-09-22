@@ -2,6 +2,8 @@
 
 SESAME Bot 2 / Bot 3 のQRコードをブラウザだけで解析する、完全クライアントサイドのWebアプリです。
 
+**公開サイト:** https://sesame-key-inspector.ryuya1adgjmptw.workers.dev/
+
 **画像・QRコード・Secret Key はすべてブラウザ内でのみ処理され、サーバーへは一切送信しません。**
 
 ---
