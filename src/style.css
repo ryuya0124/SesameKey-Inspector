@@ -6,28 +6,28 @@
 /* ---- カスタムプロパティ (デザイントークン) ---- */
 :root {
   /* カラーパレット */
-  --color-bg:          #060b17;
-  --color-bg-2:        #0a1020;
-  --color-surface:     rgba(13, 22, 45, 0.85);
-  --color-surface-2:   rgba(20, 35, 65, 0.6);
-  --color-border:      rgba(0, 212, 255, 0.15);
-  --color-border-2:    rgba(0, 212, 255, 0.08);
+  --color-bg: #060b17;
+  --color-bg-2: #0a1020;
+  --color-surface: rgba(13, 22, 45, 0.85);
+  --color-surface-2: rgba(20, 35, 65, 0.6);
+  --color-border: rgba(0, 212, 255, 0.15);
+  --color-border-2: rgba(0, 212, 255, 0.08);
 
-  --color-primary:     #00d4ff;
+  --color-primary: #00d4ff;
   --color-primary-dim: rgba(0, 212, 255, 0.15);
   --color-primary-glow: rgba(0, 212, 255, 0.3);
-  --color-accent:      #7c3aed;
-  --color-accent-dim:  rgba(124, 58, 237, 0.15);
+  --color-accent: #7c3aed;
+  --color-accent-dim: rgba(124, 58, 237, 0.15);
 
-  --color-text:        #e8f0fe;
-  --color-text-2:      #94a3b8;
-  --color-text-3:      #64748b;
+  --color-text: #e8f0fe;
+  --color-text-2: #94a3b8;
+  --color-text-3: #64748b;
 
-  --color-success:     #22c55e;
+  --color-success: #22c55e;
   --color-success-dim: rgba(34, 197, 94, 0.15);
-  --color-error:       #f87171;
-  --color-error-dim:   rgba(248, 113, 113, 0.12);
-  --color-warning:     #f59e0b;
+  --color-error: #f87171;
+  --color-error-dim: rgba(248, 113, 113, 0.12);
+  --color-warning: #f59e0b;
 
   /* タイポグラフィ */
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
@@ -68,24 +68,26 @@
 /* ---- ライトモード (prefers-color-scheme) ---- */
 @media (prefers-color-scheme: light) {
   :root {
-    --color-bg:          #f0f4ff;
-    --color-bg-2:        #e8eeff;
-    --color-surface:     rgba(255, 255, 255, 0.92);
-    --color-surface-2:   rgba(240, 244, 255, 0.8);
-    --color-border:      rgba(99, 102, 241, 0.2);
-    --color-border-2:    rgba(99, 102, 241, 0.1);
-    --color-primary:     #4f46e5;
+    --color-bg: #f0f4ff;
+    --color-bg-2: #e8eeff;
+    --color-surface: rgba(255, 255, 255, 0.92);
+    --color-surface-2: rgba(240, 244, 255, 0.8);
+    --color-border: rgba(99, 102, 241, 0.2);
+    --color-border-2: rgba(99, 102, 241, 0.1);
+    --color-primary: #4f46e5;
     --color-primary-dim: rgba(79, 70, 229, 0.12);
     --color-primary-glow: rgba(79, 70, 229, 0.2);
-    --color-text:        #1e1b4b;
-    --color-text-2:      #4c4f6b;
-    --color-text-3:      #6b7280;
+    --color-text: #1e1b4b;
+    --color-text-2: #4c4f6b;
+    --color-text-3: #6b7280;
     --shadow-card: 0 4px 24px rgba(79, 70, 229, 0.1), 0 0 0 1px var(--color-border);
   }
 }
 
 /* ---- リセット & ベース ---- */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -334,7 +336,9 @@ body {
   height: 80px;
   color: var(--color-primary);
   opacity: 0.7;
-  transition: transform var(--transition-base), opacity var(--transition-base);
+  transition:
+    transform var(--transition-base),
+    opacity var(--transition-base);
 }
 
 .drop-zone:hover .drop-zone-icon {
@@ -516,7 +520,9 @@ body {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .analyzing-title {
@@ -592,12 +598,10 @@ body {
 
 .result-card.highlight {
   border-color: rgba(0, 212, 255, 0.4);
-  background: linear-gradient(
-    135deg,
-    rgba(0, 212, 255, 0.05) 0%,
-    rgba(124, 58, 237, 0.05) 100%
-  );
-  box-shadow: var(--shadow-card), inset 0 0 40px rgba(0, 212, 255, 0.03);
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+  box-shadow:
+    var(--shadow-card),
+    inset 0 0 40px rgba(0, 212, 255, 0.03);
 }
 
 .card-label {

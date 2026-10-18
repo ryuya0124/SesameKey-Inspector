@@ -74,10 +74,7 @@ export function parseSesameData(ssmUri: SsmUri): SesameDeviceInfo {
     bytes = decodeBase64Url(ssmUri.sk);
   } catch (err) {
     if (err instanceof SesameError) throw err;
-    throw new SesameError(
-      SesameErrorCode.INVALID_BASE64URL,
-      "Base64URL decode failed",
-    );
+    throw new SesameError(SesameErrorCode.INVALID_BASE64URL, "Base64URL decode failed");
   }
 
   // 10分限定の暗号化QRは、共有鍵本体ではなく16 bytesの交換トークンを持つ。
@@ -127,34 +124,27 @@ export function parseSesameData(ssmUri: SsmUri): SesameDeviceInfo {
 
   const secretKeyHex = toHexString(secretKey);
 
-  const layout = bytes.length >= FULL_PAYLOAD_BYTES
-    ? OFFSETS
-    : bytes.length >= COMPACT_PAYLOAD_BYTES
-      ? COMPACT_OFFSETS
-      : null;
+  const layout =
+    bytes.length >= FULL_PAYLOAD_BYTES
+      ? OFFSETS
+      : bytes.length >= COMPACT_PAYLOAD_BYTES
+        ? COMPACT_OFFSETS
+        : null;
 
   // Public Key — OS2は64 bytes、OS3コンパクト形式は4 bytes
   const publicKey = layout
-    ? bytes.slice(
-        layout.publicKey.start,
-        layout.publicKey.start + layout.publicKey.length,
-      )
+    ? bytes.slice(layout.publicKey.start, layout.publicKey.start + layout.publicKey.length)
     : new Uint8Array(0);
 
   // Key Index (byte 81-82) — little-endian uint16
   let keyIndex = 0;
   if (layout) {
-    keyIndex =
-      bytes[layout.keyIndex.start] |
-      (bytes[layout.keyIndex.start + 1] << 8);
+    keyIndex = bytes[layout.keyIndex.start] | (bytes[layout.keyIndex.start + 1] << 8);
   }
 
   // UUID (byte 83-98)
   const uuid = layout
-    ? bytes.slice(
-        layout.uuid.start,
-        layout.uuid.start + layout.uuid.length,
-      )
+    ? bytes.slice(layout.uuid.start, layout.uuid.start + layout.uuid.length)
     : new Uint8Array(0);
 
   const uuidString = uuid.length === 16 ? formatUuid(uuid) : "";

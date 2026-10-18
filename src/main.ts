@@ -22,18 +22,18 @@ import { SesameError, SesameErrorCode } from "./errors.ts";
 import type { DecodeResponse } from "./qr/worker-entry.ts";
 
 // ---- セクション要素 ----
-const sectionUpload   = document.getElementById("section-upload")!;
+const sectionUpload = document.getElementById("section-upload")!;
 const sectionAnalyzing = document.getElementById("section-analyzing")!;
-const sectionResult   = document.getElementById("section-result")!;
-const sectionError    = document.getElementById("section-error")!;
+const sectionResult = document.getElementById("section-result")!;
+const sectionError = document.getElementById("section-error")!;
 const analyzingStageEl = document.getElementById("analyzing-stage")!;
 
 /** 表示するセクションを切り替える */
 function showSection(section: "upload" | "analyzing" | "result" | "error"): void {
-  sectionUpload.classList.toggle("hidden",    section !== "upload");
+  sectionUpload.classList.toggle("hidden", section !== "upload");
   sectionAnalyzing.classList.toggle("hidden", section !== "analyzing");
-  sectionResult.classList.toggle("hidden",    section !== "result");
-  sectionError.classList.toggle("hidden",     section !== "error");
+  sectionResult.classList.toggle("hidden", section !== "result");
+  sectionError.classList.toggle("hidden", section !== "error");
 }
 
 /** 解析中ステージのテキストを更新する */
@@ -48,10 +48,7 @@ let worker: Worker | null = null;
 function getWorker(): Worker {
   if (!worker) {
     // Vite の ?worker 構文でバンドルに含める
-    worker = new Worker(
-      new URL("./qr/worker-entry.ts", import.meta.url),
-      { type: "module" },
-    );
+    worker = new Worker(new URL("./qr/worker-entry.ts", import.meta.url), { type: "module" });
   }
   return worker;
 }

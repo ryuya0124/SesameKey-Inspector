@@ -26,7 +26,7 @@ export const SesameErrorCode = {
   /** CANDY HOUSEサーバーでのみ復号できる10分限定の暗号化QR */
   ENCRYPTED_QR_UNSUPPORTED: "ENCRYPTED_QR_UNSUPPORTED",
 } as const;
-export type SesameErrorCode = typeof SesameErrorCode[keyof typeof SesameErrorCode];
+export type SesameErrorCode = (typeof SesameErrorCode)[keyof typeof SesameErrorCode];
 
 /** アプリ固有のエラークラス */
 export class SesameError extends Error {

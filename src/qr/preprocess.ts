@@ -22,9 +22,7 @@ export interface ProcessedImage {
 
 /** OffscreenCanvas が使えない環境向けのフォールバック型 */
 type AnyCanvas = OffscreenCanvas | HTMLCanvasElement;
-type AnyCtx =
-  | OffscreenCanvasRenderingContext2D
-  | CanvasRenderingContext2D;
+type AnyCtx = OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D;
 
 /** 作業用Canvas/Contextを生成する */
 function createCanvas(width: number, height: number): [AnyCanvas, AnyCtx] {
@@ -96,10 +94,7 @@ export function toGrayscale(imageData: ImageData): ImageData {
  * nearest-neighbor アップスケール
  * QRコードが小さい場合に情報量を失わずに拡大する
  */
-export function nearestNeighborUpscale(
-  imageData: ImageData,
-  scale: number,
-): ImageData {
+export function nearestNeighborUpscale(imageData: ImageData, scale: number): ImageData {
   const srcW = imageData.width;
   const srcH = imageData.height;
   const dstW = Math.round(srcW * scale);
@@ -129,10 +124,7 @@ export function nearestNeighborUpscale(
  * 白いQuiet Zoneを周囲に追加する
  * スクリーンショット内のQRコードはQuiet Zoneが狭いことが多い
  */
-export function addQuietZone(
-  imageData: ImageData,
-  padding: number = QUIET_ZONE_SIZE,
-): ImageData {
+export function addQuietZone(imageData: ImageData, padding: number = QUIET_ZONE_SIZE): ImageData {
   const srcW = imageData.width;
   const srcH = imageData.height;
   const dstW = srcW + padding * 2;
@@ -169,10 +161,7 @@ export function addQuietZone(
  * 二値化 (Threshold処理)
  * 輝度がしきい値以上のピクセルを白、未満を黒にする
  */
-export function threshold(
-  imageData: ImageData,
-  thresholdValue: number = 128,
-): ImageData {
+export function threshold(imageData: ImageData, thresholdValue: number = 128): ImageData {
   const src = imageData.data;
   const out = new ImageData(imageData.width, imageData.height);
   const dst = out.data;
@@ -212,9 +201,7 @@ export function invertColors(imageData: ImageData): ImageData {
  * 前処理済み画像を順番に生成するジェネレーター
  * 成功した時点で呼び出し元が break することでメモリを節約する
  */
-export function* preprocessingPipeline(
-  original: ImageData,
-): Generator<ProcessedImage> {
+export function* preprocessingPipeline(original: ImageData): Generator<ProcessedImage> {
   // 1. オリジナル (既にリサイズ済み)
   yield { imageData: original, label: "original" };
 

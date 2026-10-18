@@ -194,13 +194,11 @@ export function initUpload(onImageSelected: ImageSelectedCallback): void {
 
   // ドロップゾーンのクリック (ボタン以外の部分)
   dropZone.addEventListener("click", (e) => {
-    if (e.target === btnSelect || e.target === btnPaste || btnPaste?.contains(e.target as Node)) return;
+    if (e.target === btnSelect || e.target === btnPaste || btnPaste?.contains(e.target as Node))
+      return;
     fileInput.click();
   });
 
   // ドロップゾーンのaria-labelを翻訳に連動
-  dropZone.setAttribute(
-    "aria-label",
-    t("uploadDesc"),
-  );
+  dropZone.setAttribute("aria-label", t("uploadDesc"));
 }

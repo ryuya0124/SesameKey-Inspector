@@ -36,20 +36,28 @@ async function getBarcodeDetector(): Promise<BarcodeDetector | null> {
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (typeof (globalThis as unknown as Record<string, unknown>)["BarcodeDetector"] === "undefined") {
+    if (
+      typeof (globalThis as unknown as Record<string, unknown>)["BarcodeDetector"] === "undefined"
+    ) {
       barcodeDetectorSupported = false;
       return null;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formats = await (globalThis as unknown as { BarcodeDetector: { getSupportedFormats(): Promise<string[]> } }).BarcodeDetector.getSupportedFormats();
+    const formats = await (
+      globalThis as unknown as { BarcodeDetector: { getSupportedFormats(): Promise<string[]> } }
+    ).BarcodeDetector.getSupportedFormats();
     if (!formats.includes("qr_code")) {
       barcodeDetectorSupported = false;
       return null;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    barcodeDetectorInstance = new (globalThis as unknown as { BarcodeDetector: new (opts: { formats: string[] }) => BarcodeDetector }).BarcodeDetector({
+    barcodeDetectorInstance = new (
+      globalThis as unknown as {
+        BarcodeDetector: new (opts: { formats: string[] }) => BarcodeDetector;
+      }
+    ).BarcodeDetector({
       formats: ["qr_code"],
     });
     barcodeDetectorSupported = true;
@@ -64,9 +72,7 @@ async function getBarcodeDetector(): Promise<BarcodeDetector | null> {
  * BarcodeDetector API で QR コードをデコードする
  * @returns QRコードの文字列、または null
  */
-async function decodeWithBarcodeDetector(
-  imageData: ImageData,
-): Promise<string | null> {
+async function decodeWithBarcodeDetector(imageData: ImageData): Promise<string | null> {
   const detector = await getBarcodeDetector();
   if (!detector) return null;
 
@@ -105,9 +111,7 @@ async function getQrScanner(): Promise<typeof import("qr-scanner") | null> {
  * qr-scanner ライブラリで QR コードをデコードする
  * @returns QRコードの文字列、または null
  */
-async function decodeWithQrScanner(
-  imageData: ImageData,
-): Promise<string | null> {
+async function decodeWithQrScanner(imageData: ImageData): Promise<string | null> {
   const QrScanner = await getQrScanner();
   if (!QrScanner) return null;
 
@@ -120,9 +124,16 @@ async function decodeWithQrScanner(
     const file = new File([blob], "qr.png", { type: "image/png" });
 
     // qr-scanner の型定義に合わせてキャスト
-    const result = await (QrScanner as unknown as {
-      default: { scanImage: (file: File, options?: { returnDetailedScanResult?: boolean }) => Promise<{ data: string }> };
-    }).default.scanImage(file, { returnDetailedScanResult: true });
+    const result = await (
+      QrScanner as unknown as {
+        default: {
+          scanImage: (
+            file: File,
+            options?: { returnDetailedScanResult?: boolean },
+          ) => Promise<{ data: string }>;
+        };
+      }
+    ).default.scanImage(file, { returnDetailedScanResult: true });
 
     return result?.data ?? null;
   } catch {

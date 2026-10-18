@@ -42,10 +42,7 @@ export function t(key: TranslationKey, values?: Record<string, string>): string 
   const text = translations[currentLang][key] as string;
   if (!values) return text;
 
-  return Object.entries(values).reduce(
-    (acc, [k, v]) => acc.replace(`{${k}}`, v),
-    text,
-  );
+  return Object.entries(values).reduce((acc, [k, v]) => acc.replace(`{${k}}`, v), text);
 }
 
 /** 現在の言語を取得する */
@@ -66,34 +63,28 @@ export function setLang(lang: Lang): void {
   document.documentElement.lang = lang;
 
   // 翻訳対象の全要素を更新
-  document
-    .querySelectorAll<HTMLElement>("[data-i18n]")
-    .forEach((el) => {
-      const key = el.dataset.i18n!;
-      if (key in ja) {
-        el.textContent = t(key as TranslationKey);
-      }
-    });
+  document.querySelectorAll<HTMLElement>("[data-i18n]").forEach((el) => {
+    const key = el.dataset.i18n!;
+    if (key in ja) {
+      el.textContent = t(key as TranslationKey);
+    }
+  });
 
   // placeholder の更新
-  document
-    .querySelectorAll<HTMLElement>("[data-i18n-placeholder]")
-    .forEach((el) => {
-      const key = el.dataset.i18nPlaceholder as TranslationKey;
-      if (el instanceof HTMLInputElement && key in translations.ja) {
-        el.placeholder = t(key);
-      }
-    });
+  document.querySelectorAll<HTMLElement>("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.dataset.i18nPlaceholder as TranslationKey;
+    if (el instanceof HTMLInputElement && key in translations.ja) {
+      el.placeholder = t(key);
+    }
+  });
 
   // aria-label の更新
-  document
-    .querySelectorAll<HTMLElement>("[data-i18n-aria]")
-    .forEach((el) => {
-      const key = el.dataset.i18nAria!;
-      if (key in ja) {
-        el.setAttribute("aria-label", t(key as TranslationKey));
-      }
-    });
+  document.querySelectorAll<HTMLElement>("[data-i18n-aria]").forEach((el) => {
+    const key = el.dataset.i18nAria!;
+    if (key in ja) {
+      el.setAttribute("aria-label", t(key as TranslationKey));
+    }
+  });
 }
 
 /** 言語をトグルする (ja ↔ en) */

@@ -24,7 +24,7 @@ export const ProductModel = {
   F1: 19,
   SesameBot3: 35, // Bot 2と同じ制御実装だがProduct Modelは別
 } as const;
-export type ProductModel = typeof ProductModel[keyof typeof ProductModel];
+export type ProductModel = (typeof ProductModel)[keyof typeof ProductModel];
 
 /**
  * デバイスタイプが「鍵」（Lock / Bot）系かどうかを判定する
@@ -53,27 +53,48 @@ export function isBotDevice(model: number): boolean {
 /** デバイスモデル番号から表示名を返す */
 export function getModelName(model: number): string {
   switch (model) {
-    case ProductModel.Sesame3:       return "Sesame 3";
-    case ProductModel.WiFiModule2:   return "WiFi Module 2";
-    case ProductModel.SesameBot1:    return "Sesame Bot 1";
-    case ProductModel.SesameBike1:   return "Sesame Bike 1";
-    case ProductModel.Sesame4:       return "Sesame 4";
-    case ProductModel.Sesame5:       return "Sesame 5";
-    case ProductModel.SesameBike2:   return "Sesame Bike 2";
-    case ProductModel.Sesame5Pro:    return "Sesame 5 Pro";
-    case ProductModel.OpenSensor:    return "Open Sensor";
-    case ProductModel.SesameTouch1Pro: return "Sesame Touch 1 Pro";
-    case ProductModel.SesameTouch1:  return "Sesame Touch 1";
-    case ProductModel.BleConnector:  return "BLE Connector";
-    case ProductModel.Hub3:          return "Hub 3";
-    case ProductModel.SesameRemote:  return "Sesame Remote";
-    case ProductModel.RemoteNano:    return "Remote Nano";
-    case ProductModel.Sesame5USA:    return "Sesame 5 (USA)";
-    case ProductModel.SesameBot2:    return "Sesame Bot 2";
-    case ProductModel.F2:            return "F2";
-    case ProductModel.F1:            return "F1";
-    case ProductModel.SesameBot3:    return "Sesame Bot 3";
-    default:                         return `Unknown (type=${model})`;
+    case ProductModel.Sesame3:
+      return "Sesame 3";
+    case ProductModel.WiFiModule2:
+      return "WiFi Module 2";
+    case ProductModel.SesameBot1:
+      return "Sesame Bot 1";
+    case ProductModel.SesameBike1:
+      return "Sesame Bike 1";
+    case ProductModel.Sesame4:
+      return "Sesame 4";
+    case ProductModel.Sesame5:
+      return "Sesame 5";
+    case ProductModel.SesameBike2:
+      return "Sesame Bike 2";
+    case ProductModel.Sesame5Pro:
+      return "Sesame 5 Pro";
+    case ProductModel.OpenSensor:
+      return "Open Sensor";
+    case ProductModel.SesameTouch1Pro:
+      return "Sesame Touch 1 Pro";
+    case ProductModel.SesameTouch1:
+      return "Sesame Touch 1";
+    case ProductModel.BleConnector:
+      return "BLE Connector";
+    case ProductModel.Hub3:
+      return "Hub 3";
+    case ProductModel.SesameRemote:
+      return "Sesame Remote";
+    case ProductModel.RemoteNano:
+      return "Remote Nano";
+    case ProductModel.Sesame5USA:
+      return "Sesame 5 (USA)";
+    case ProductModel.SesameBot2:
+      return "Sesame Bot 2";
+    case ProductModel.F2:
+      return "F2";
+    case ProductModel.F1:
+      return "F1";
+    case ProductModel.SesameBot3:
+      return "Sesame Bot 3";
+    default:
+      return `Unknown (type=${model})`;
   }
 }
 

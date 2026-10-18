@@ -49,6 +49,17 @@ pnpm dev
 
 ---
 
+## コード整形
+
+TypeScript・CSS・HTML・設定ファイルは Prettier で整形します。
+
+```bash
+pnpm format        # 整形する
+pnpm format:check  # 整形済みか確認する
+```
+
+---
+
 ## ビルド
 
 ```bash

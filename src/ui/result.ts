@@ -54,14 +54,16 @@ function showToast(message: string): void {
 }
 
 /** アクセスレベルのラベルと CSS クラスを返す */
-function getAccessLevelInfo(
-  level?: number,
-): { label: string; cssClass: string } {
+function getAccessLevelInfo(level?: number): { label: string; cssClass: string } {
   switch (level) {
-    case 0:  return { label: t("accessOwner"),   cssClass: "owner" };
-    case 1:  return { label: t("accessManager"), cssClass: "manager" };
-    case 2:  return { label: t("accessGuest"),   cssClass: "guest" };
-    default: return { label: t("accessUnknown"), cssClass: "" };
+    case 0:
+      return { label: t("accessOwner"), cssClass: "owner" };
+    case 1:
+      return { label: t("accessManager"), cssClass: "manager" };
+    case 2:
+      return { label: t("accessGuest"), cssClass: "guest" };
+    default:
+      return { label: t("accessUnknown"), cssClass: "" };
   }
 }
 
@@ -301,11 +303,7 @@ function createDisguiseCard(sourceQrText: string): HTMLElement {
 }
 
 /** 汎用カードを生成する */
-function createCard(
-  label: string,
-  contentHtml: string,
-  _highlight: boolean,
-): HTMLElement {
+function createCard(label: string, contentHtml: string, _highlight: boolean): HTMLElement {
   const card = document.createElement("div");
   card.className = "result-card";
 

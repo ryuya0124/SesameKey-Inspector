@@ -43,10 +43,7 @@ export function parseSsmUri(rawText: string): SsmUri {
     const normalized = rawText.replace(/^ssm:\/\//, "https://sesame-dummy/");
     url = new URL(normalized);
   } catch {
-    throw new SesameError(
-      SesameErrorCode.INVALID_URI,
-      "Failed to parse ssm:// URI structure",
-    );
+    throw new SesameError(SesameErrorCode.INVALID_URI, "Failed to parse ssm:// URI structure");
   }
 
   const params = url.searchParams;
@@ -54,10 +51,7 @@ export function parseSsmUri(rawText: string): SsmUri {
   // t パラメータの確認
   const type = params.get("t");
   if (!type) {
-    throw new SesameError(
-      SesameErrorCode.INVALID_URI,
-      "Missing 't' parameter in ssm:// URI",
-    );
+    throw new SesameError(SesameErrorCode.INVALID_URI, "Missing 't' parameter in ssm:// URI");
   }
 
   // sk パラメータの確認
@@ -65,23 +59,16 @@ export function parseSsmUri(rawText: string): SsmUri {
   // `+` を空白として扱う。SESAMEの標準Base64では `+` が正当な文字なので戻す。
   const sk = params.get("sk")?.replace(/ /g, "+") ?? null;
   if (!sk) {
-    throw new SesameError(
-      SesameErrorCode.MISSING_SK,
-      "Missing 'sk' parameter in ssm:// URI",
-    );
+    throw new SesameError(SesameErrorCode.MISSING_SK, "Missing 'sk' parameter in ssm:// URI");
   }
 
   if (sk.trim().length === 0) {
-    throw new SesameError(
-      SesameErrorCode.MISSING_SK,
-      "'sk' parameter is empty",
-    );
+    throw new SesameError(SesameErrorCode.MISSING_SK, "'sk' parameter is empty");
   }
 
   // オプションパラメータの取得
   const levelStr = params.get("l");
-  const accessLevel =
-    levelStr !== null ? parseInt(levelStr, 10) : undefined;
+  const accessLevel = levelStr !== null ? parseInt(levelStr, 10) : undefined;
 
   const deviceName = params.get("n") ?? undefined;
 

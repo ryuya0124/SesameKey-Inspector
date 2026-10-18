@@ -21,10 +21,7 @@ import { SesameError, SesameErrorCode } from "../errors.ts";
  */
 export function decodeBase64Url(value: string): Uint8Array {
   if (!value || value.length === 0) {
-    throw new SesameError(
-      SesameErrorCode.INVALID_BASE64URL,
-      "Base64URL string is empty",
-    );
+    throw new SesameError(SesameErrorCode.INVALID_BASE64URL, "Base64URL string is empty");
   }
 
   // Base64URL → 標準Base64 に変換

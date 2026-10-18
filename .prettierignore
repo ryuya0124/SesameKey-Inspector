@@ -1,0 +1,6 @@
+dist/
+node_modules/
+.wrangler/
+pnpm-lock.yaml
+README.md
+public/

@@ -11,9 +11,7 @@ import { t } from "../i18n/index.ts";
 /**
  * エラーコードに対応した i18n キーを返す
  */
-function getErrorMessageKey(
-  code: SesameErrorCode,
-): keyof typeof import("../i18n/ja.ts").ja {
+function getErrorMessageKey(code: SesameErrorCode): keyof typeof import("../i18n/ja.ts").ja {
   switch (code) {
     case SesameErrorCode.QR_NOT_FOUND:
       return "errorQrNotFound";
